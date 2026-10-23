@@ -1,0 +1,13 @@
+[project]
+name = "video-courseware-agent"
+version = "2.0.4"
+description = "VideoLearn AI - Video Pedagogical Engine & Cyber Defense System"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "fastapi>=0.100.0",
+    "uvicorn>=0.23.0",
+    "python-multipart>=0.0.6",
+    "pydantic>=2.0.0",
+    "httpx>=0.24.0",
+]

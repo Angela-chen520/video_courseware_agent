@@ -5,17 +5,30 @@ multi-format courseware generation, and interactive AI tutoring.
 """
 
 import os
+import sys
 import io
 import urllib.parse
 from typing import Dict, Any, List, Optional
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+PARENT_DIR = os.path.dirname(BASE_DIR)
+if PARENT_DIR not in sys.path:
+    sys.path.insert(0, PARENT_DIR)
+if BASE_DIR not in sys.path:
+    sys.path.insert(0, BASE_DIR)
+
 from fastapi import FastAPI, HTTPException, UploadFile, File, Form, Query
 from fastapi.responses import HTMLResponse, FileResponse, Response, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
-from video_courseware_agent.agent import orchestrator
-from video_courseware_agent.security import SecurityGuard
+try:
+    from video_courseware_agent.agent import orchestrator
+    from video_courseware_agent.security import SecurityGuard
+except ImportError:
+    from agent import orchestrator
+    from security import SecurityGuard
 
 app = FastAPI(
     title="VideoLearn AI - 影片智慧教材生成與資安防護系統",
@@ -485,4 +498,6 @@ async def download_mobile_app(platform: str):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("video_courseware_agent.web_server:app", host="0.0.0.0", port=8001, reload=True)
+    existing_pythonpath = os.environ.get("PYTHONPATH", "")
+    os.environ["PYTHONPATH"] = f"{BASE_DIR}:{PARENT_DIR}" + (f":{existing_pythonpath}" if existing_pythonpath else "")
+    uvicorn.run("web_server:app", host="0.0.0.0", port=8001, reload=True, reload_dirs=[BASE_DIR])

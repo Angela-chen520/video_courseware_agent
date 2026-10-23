@@ -9,14 +9,29 @@ Orchestrates:
 """
 
 import os
+import sys
 import uuid
 from typing import Dict, Any, List, Optional
 
-from video_courseware_agent.security import SecurityGuard
-from video_courseware_agent.media_ingest import MediaIngestor
-from video_courseware_agent.transcriber import AudioTranscriber
-from video_courseware_agent.courseware_engine import CoursewareEngine
-from video_courseware_agent.tutor import AcademicTutor
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+PARENT_DIR = os.path.dirname(BASE_DIR)
+if PARENT_DIR not in sys.path:
+    sys.path.insert(0, PARENT_DIR)
+if BASE_DIR not in sys.path:
+    sys.path.insert(0, BASE_DIR)
+
+try:
+    from video_courseware_agent.security import SecurityGuard
+    from video_courseware_agent.media_ingest import MediaIngestor
+    from video_courseware_agent.transcriber import AudioTranscriber
+    from video_courseware_agent.courseware_engine import CoursewareEngine
+    from video_courseware_agent.tutor import AcademicTutor
+except ImportError:
+    from security import SecurityGuard
+    from media_ingest import MediaIngestor
+    from transcriber import AudioTranscriber
+    from courseware_engine import CoursewareEngine
+    from tutor import AcademicTutor
 
 try:
     from google.adk.agents import Agent
@@ -32,12 +47,12 @@ class VideoLearnOrchestrator:
     Core orchestrator managing the end-to-end pipeline from raw video link to multi-format courseware.
     """
 
-    def __init__(self, output_dir: str = "video_courseware_agent/exports"):
+    def __init__(self, output_dir: str = os.path.join(BASE_DIR, "exports")):
         self.output_dir = output_dir
         os.makedirs(self.output_dir, exist_ok=True)
 
         self.security = SecurityGuard()
-        self.ingestor = MediaIngestor(output_dir="video_courseware_agent/temp_media")
+        self.ingestor = MediaIngestor(output_dir=os.path.join(BASE_DIR, "temp_media"))
         self.transcriber = AudioTranscriber()
         self.courseware_engine = CoursewareEngine()
         self.tutor = AcademicTutor()

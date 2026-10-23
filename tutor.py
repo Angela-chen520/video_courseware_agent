@@ -6,7 +6,11 @@ and receive pedagogical explanations grounded in the video transcript and course
 
 import os
 from typing import List, Dict, Any, Optional
-from video_courseware_agent.security import SecurityGuard
+
+try:
+    from video_courseware_agent.security import SecurityGuard
+except ImportError:
+    from security import SecurityGuard
 
 
 class AcademicTutor:

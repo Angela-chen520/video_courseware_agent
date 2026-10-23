@@ -12,7 +12,11 @@ import re
 import uuid
 import struct
 from typing import Dict, Any, Optional, List, Tuple
-from video_courseware_agent.security import SecurityGuard
+
+try:
+    from video_courseware_agent.security import SecurityGuard
+except ImportError:
+    from security import SecurityGuard
 
 # Base media directory
 TEMP_MEDIA_DIR = os.path.join(os.path.dirname(__file__), "temp_media")

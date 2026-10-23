@@ -8,18 +8,37 @@ Verifies:
 5. FastAPI Web Server API Endpoints
 """
 
+import os
 import sys
 import unittest
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+PARENT_DIR = os.path.dirname(BASE_DIR)
+if PARENT_DIR not in sys.path:
+    sys.path.insert(0, PARENT_DIR)
+if BASE_DIR not in sys.path:
+    sys.path.insert(0, BASE_DIR)
+
 from fastapi.testclient import TestClient
 
-from video_courseware_agent.security import SecurityGuard
-from video_courseware_agent.media_ingest import MediaIngestor
-from video_courseware_agent.transcriber import AudioTranscriber
-from video_courseware_agent.courseware_engine import CoursewareEngine
-from video_courseware_agent.pptx_generator import PurePPTXBuilder
-from video_courseware_agent.tutor import AcademicTutor
-from video_courseware_agent.agent import orchestrator
-from video_courseware_agent.web_server import app
+try:
+    from video_courseware_agent.security import SecurityGuard
+    from video_courseware_agent.media_ingest import MediaIngestor
+    from video_courseware_agent.transcriber import AudioTranscriber
+    from video_courseware_agent.courseware_engine import CoursewareEngine
+    from video_courseware_agent.pptx_generator import PurePPTXBuilder
+    from video_courseware_agent.tutor import AcademicTutor
+    from video_courseware_agent.agent import orchestrator
+    from video_courseware_agent.web_server import app
+except ImportError:
+    from security import SecurityGuard
+    from media_ingest import MediaIngestor
+    from transcriber import AudioTranscriber
+    from courseware_engine import CoursewareEngine
+    from pptx_generator import PurePPTXBuilder
+    from tutor import AcademicTutor
+    from agent import orchestrator
+    from web_server import app
 
 
 class TestVideoLearnAgent(unittest.TestCase):

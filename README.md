@@ -13,10 +13,10 @@
 
 | 體驗模式 | 支援功能 | 體驗連結 / 啟動方式 |
 |---|---|---|
-| **🌐 GitHub Pages 線上展示模式** | 靜態展示完整雙語介面、3大範例即時解析、心智圖、學習地圖、Canva腳本與 Blob 檔案下載 | [👉 立即開啟 GitHub Pages 線上 Demo](https://angela-chen520.github.io/ai-devcamp-labs/) |
-| **☁️ GitHub Codespaces 完整雲端執行** | 免裝環境直接在雲端啟動完整 FastAPI 後端與真實 AI 代理人工作流 | [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/Angela-chen520/ai-devcamp-labs/tree/my-work-2) |
+| **🌐 GitHub Pages 線上展示模式** | 靜態展示完整雙語介面、3大範例即時解析、心智圖、學習地圖、Canva腳本與 Blob 檔案下載 | [👉 立即開啟 GitHub Pages 線上 Demo](https://angela-chen520.github.io/video_courseware_agent/) |
+| **☁️ GitHub Codespaces 完整雲端執行** | 免裝環境直接在雲端啟動完整 FastAPI 後端與真實 AI 代理人工作流 | [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/Angela-chen520/video_courseware_agent) |
 
-> 💡 **GitHub Pages 設定說明**：本儲存庫根目錄已配置標準 `index.html` 與 `.nojekyll`。前往 GitHub Repo 的 **Settings -> Pages**，將 Build and deployment 的 Source 設為 **Deploy from a branch**，選擇分支 **`my-work-2`** 且目錄選擇 **`/ (root)`** 即可完成發布！
+> 💡 **GitHub Pages 設定說明**：本儲存庫根目錄已配置標準 `index.html` 與 `.nojekyll`。前往 GitHub Repo 的 **Settings -> Pages**，將 Build and deployment 的 Source 設為 **Deploy from a branch**，選擇分支 **`main`** 且目錄選擇 **`/ (root)`** 即可完成發布！
 
 ---
 
@@ -92,16 +92,19 @@ VideoLearn AI 是一套遵循 **Google Enterprise Agent Platform** 與 **ADK (Ag
 在專案根目錄下直接執行：
 
 ```bash
-# 1. 執行啟動腳本（預設監聽 8001 連接埠）
+# 方式 A：使用一鍵啟動腳本（預設監聽 8001 連接埠）
 ./run-videolearn.sh
 
-# 2. 開啟瀏覽器訪問 Web 操作介面（支援即時雙語切換）
+# 方式 B：使用 uv 直接啟動 FastAPI 伺服器
+uv run python web_server.py
+
+# 開啟瀏覽器訪問 Web 操作介面（支援即時雙語切換）
 http://localhost:8001
 ```
 
 ### 執行單元與資安整合測試套件 (Run Test Suite)
 ```bash
-PYTHONPATH=. ./.bin/uv run python video_courseware_agent/test_suite.py
+uv run python test_suite.py
 ```
 
 ---
@@ -110,6 +113,12 @@ PYTHONPATH=. ./.bin/uv run python video_courseware_agent/test_suite.py
 
 ```
 video_courseware_agent/
+├── __init__.py              # Python 套件導出介面與版本宣告
+├── pyproject.toml           # 專案依賴與套件設定檔 (FastAPI, Uvicorn, Pydantic 等)
+├── run-videolearn.sh        # 一鍵快速啟動腳本 (自動偵測 uv / .venv / python3)
+├── .gitignore               # Git 版本控制過濾規則 (排除 .venv、__pycache__ 與暫存輸出)
+├── .nojekyll                # GitHub Pages 靜態直出設定檔 (停用 Jekyll 編譯)
+├── index.html               # GitHub Pages 根目錄靜態展示入口頁 (與 static/index.html 同步)
 ├── agent.py                 # ADK 智慧體總協調者 (Orchestrator Pipeline)
 ├── security.py              # 7 重企業級資安防線 (SSRF, Magic Bytes, Whitelist, Injection)
 ├── media_ingest.py          # 多平台串流擷取與沙盒防毒驗證模組
@@ -121,6 +130,6 @@ video_courseware_agent/
 ├── test_suite.py            # 完整單元與資安整合測試套件
 ├── static/
 │   └── index.html           # 雙語切換響應式 Web 介面 (Tailwind + FontAwesome + Mermaid)
-├── exports/                 # 匯出講義、投影片、字幕與軟體安裝包快取
-└── temp_media/              # 暫存沙盒音訊處理目錄
+├── exports/                 # 匯出講義、投影片、字幕與軟體安裝包快取 (.gitkeep)
+└── temp_media/              # 暫存沙盒音訊處理目錄 (.gitkeep)
 ```

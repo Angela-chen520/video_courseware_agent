@@ -16,7 +16,11 @@ Across formats:
 import os
 import json
 from typing import Dict, Any, List, Optional
-from video_courseware_agent.pptx_generator import PurePPTXBuilder
+
+try:
+    from video_courseware_agent.pptx_generator import PurePPTXBuilder
+except ImportError:
+    from pptx_generator import PurePPTXBuilder
 
 
 class CoursewareEngine:
